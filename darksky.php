@@ -4,6 +4,7 @@ $q = $argv[1];
 $key = $argv[2];
 $lat = $argv[3];
 $log = $argv[4];
+$metric = $argv[5]; 
 $url = "https://api.darkskyapp.com/v1/brief_forecast/{$key}/{$lat},{$log}";
 
 function get_data($url) {
@@ -19,6 +20,13 @@ function get_data($url) {
 $r = get_data($url);
 $wx = json_decode($r);
 $intensity = $wx->currentIntensity;
+
+if ( $metric == 'true' )
+{
+  $temperature = round( (5/9)*($wx->currentTemp-32) );
+}else{
+  $temperature = $wx->currentTemp;
+}
 
 switch ($intensity){
   case ($intensity> 45):
@@ -43,10 +51,10 @@ switch ($q) {
   case "":
 
     if ($wx->currentSummary == "clear"):    
-      echo "It's {$wx->currentTemp} degrees with no rain. ";
+      echo "It's {$temperature} degrees with no rain. ";
       if ($wx->hourSummary == "clear"):
         echo "The next hour looks clear.";
-      else:
+      else: 
         if (strpos($wx->hourSummary, "min")):
           echo "The next hour looks like " . str_replace('min', 'minutes', $wx->hourSummary) . ".";
         else: 
@@ -55,7 +63,7 @@ switch ($q) {
       endif;
       
     else:
-      echo "It's {$wx->currentTemp} degrees and {$wx->currentSummary}. ";
+      echo "It's {$temperature} degrees and {$wx->currentSummary}. ";
       if ($rain['until_change'] == 0):
         echo "It'll be like that for a while.";
       elseif (strpos($wx->hourSummary, "min")):

@@ -20,7 +20,11 @@ KEY="82666152603d0d3d58296426c96119e5"
 LAT="40.7214"
 LON="-73.9779"
 
-php -f darksky.php -- "{query}" $KEY $LAT $LON</string>
+# Set METRIC to true to return temperature in celcius. Otherwise returns in fahrenheit
+
+METRIC="false"
+
+php -f darksky.php -- "{query}" $KEY $LAT $LON $METRIC</string>
 	<key>disabled</key>
 	<false/>
 	<key>escapedollar</key>
