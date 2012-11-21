@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>action</key>
+	<false/>
+	<key>category</key>
+	<string>SCRIPTS</string>
+	<key>command</key>
+	<string># This API key is mine but I'll let you use it for now.
+# If this stops working, get your own at
+# https://developer.darkskyapp.com/register
+
+KEY="82666152603d0d3d58296426c96119e5"
+
+# Look up your location at
+# http://stevemorse.org/jcal/latlon.php
+# Don't use more than 4 decimal points
+
+LAT="40.7214"
+LON="-73.9779"
+
+php -f darksky.php -- "{query}" $KEY $LAT $LON</string>
+	<key>disabled</key>
+	<false/>
+	<key>escapedollar</key>
+	<true/>
+	<key>escapequery</key>
+	<true/>
+	<key>escapequerybackquotes</key>
+	<true/>
+	<key>escapequerybrackets</key>
+	<true/>
+	<key>escapequeryquotes</key>
+	<true/>
+	<key>escapequerysemicolons</key>
+	<true/>
+	<key>growloutput</key>
+	<true/>
+	<key>growloutputsticky</key>
+	<false/>
+	<key>keyword</key>
+	<string>darksky</string>
+	<key>logging</key>
+	<true/>
+	<key>multifileargs</key>
+	<false/>
+	<key>parameter</key>
+	<integer>2</integer>
+	<key>silent</key>
+	<true/>
+	<key>subtitle</key>
+	<string>Check weather for "now" and the next 24 hours with "today" or "tomorrow".</string>
+	<key>title</key>
+	<string>Dark Sky</string>
+</dict>
+</plist>
