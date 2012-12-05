@@ -53,7 +53,7 @@ switch ($q) {
   case "":
 
     if ($wx->currentSummary == "clear"):
-      if (($scale == 'farenheight' && $temperature >= 34) || ($scale == 'metric' && $temperature >= 0)){
+      if (($scale == 'farenheight' && $temperature >= 32) || ($scale == 'metric' && $temperature >= 0)){
         echo "It's {$temperature} degrees with no rain. ";
       } else {
         echo "It's {$temperature} degrees with no snow. ";      
