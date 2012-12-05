@@ -24,8 +24,10 @@ $intensity = $wx->currentIntensity;
 if ( $metric == 'true' )
 {
   $temperature = round( (5/9)*($wx->currentTemp-32) );
+  $scale = 'metric';
 }else{
   $temperature = $wx->currentTemp;
+  $scale = 'farenheight';
 }
 
 switch ($intensity){
@@ -50,8 +52,12 @@ switch ($q) {
   case "now":
   case "":
 
-    if ($wx->currentSummary == "clear"):    
-      echo "It's {$temperature} degrees with no rain. ";
+    if ($wx->currentSummary == "clear"):
+      if (($scale == 'farenheight' && $temperature >= 34) || ($scale == 'metric' && $temperature >= 0)){
+        echo "It's {$temperature} degrees with no rain. ";
+      } else {
+        echo "It's {$temperature} degrees with no snow. ";      
+      }
       if ($wx->hourSummary == "clear"):
         echo "The next hour looks clear.";
       else: 
