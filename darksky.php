@@ -51,7 +51,10 @@ switch ($q) {
 
   case "now":
   case "":
-
+    if ($wx == '') {
+     echo "No response from Dark Sky. Check your Internet connection.";
+    return;
+    }
     if ($wx->currentSummary == "clear"):
       if (($scale == 'farenheight' && $temperature >= 32) || ($scale == 'metric' && $temperature >= 0)){
         echo "It's {$temperature} degrees with no rain. ";

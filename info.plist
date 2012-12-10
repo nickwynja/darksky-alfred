@@ -46,7 +46,7 @@ php -f darksky.php -- "{query}" $KEY $LAT $LON $METRIC</string>
 	<key>keyword</key>
 	<string>darksky</string>
 	<key>logging</key>
-	<true/>
+	<false/>
 	<key>multifileargs</key>
 	<false/>
 	<key>parameter</key>
