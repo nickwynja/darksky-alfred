@@ -29,20 +29,9 @@
 				<key>keyword</key>
 				<string>darksky</string>
 				<key>runningsubtext</key>
-				<string>Checking the weather...</string>
+				<string>Checking the weather based on your location...</string>
 				<key>script</key>
-				<string># Look up your location at
-# http://stevemorse.org/jcal/latlon.php
-# Don't use more than 4 decimal points
-
-LAT="40.7214"
-LON="-73.9779"
-
-# Set METRIC to TRUE to return temperature in celcius. Otherwise returns in fahrenheit
-
-METRIC='FALSE';
-
-php -f darksky.php $LAT $LON $METRIC</string>
+				<string>php -f darksky.php</string>
 				<key>subtext</key>
 				<string>Check the weather right now, the next hour, and the next 24 hours</string>
 				<key>title</key>

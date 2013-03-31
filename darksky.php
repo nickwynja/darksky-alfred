@@ -2,13 +2,6 @@
 require_once('workflows.php');
 $w = new Workflows();
 
-$lat = $argv[1];
-$lon = $argv[2];
-$metric = $argv[3];
-
-$key = $w->get( 'api.key', 'settings.plist' );
-$url = "https://api.forecast.io/forecast/{$key}/{$lat},{$lon}";
-
 function get_data($url) {
   $ch = curl_init();
   $timeout = 5;
@@ -20,10 +13,31 @@ function get_data($url) {
   return $data;
 }
 
+$key = $w->get( 'api.key', 'settings.plist' );
+
+// Get location data from IP address
+
+$ip = get_data('http://ipecho.net/plain');
+$r  = get_data('http://freegeoip.net/json/'.$ip);
+$l = json_decode($r);
+
+if (!is_object($l)) {
+  $w->result( 'error', 'error', 'There was an error checking your weather.', 'Unable to determine location', 'icon.png', 'no');
+  echo $w->toxml();
+  die ($error . print_r($l, 1));
+}
+
+// Set to metric if outside of US
+
+$metric = $l->country_code == 'US' ? FALSE : TRUE;
+
+// Call API URL
+
+$url = "https://api.forecast.io/forecast/{$key}/{$l->latitude},{$l->longitude}";
 $r = get_data($url);
 $wx = json_decode($r);
 
-///////////// ERROR HANDLING ////////////////
+// Error Handling
 
 if (!is_object($wx)) {
   $error = "Invalid response - not JSON object";
@@ -33,19 +47,7 @@ if (!is_object($wx)) {
   $error = "Invalid response data";
 } elseif (isset($wx->code)) { // see if there was an error
   $error = "Error: $wx->error (Error Code: $wx->code)";
-}
-
-// the rest of the code relies on these being set
-// if not set then PHP throws
-// Notice:  Undefined property: stdClass warnings
-
-// currently.temperature
-// minutely.summary
-// currently.summary
-// hourly.summary
-
-// ensure more of expected data is present
-elseif (!isset($wx->currently->temperature)) {
+} elseif (!isset($wx->currently->temperature)) { // ensure more of expected data is present
   $error = "Invalid response - missing currently->temperature";
 }
 
@@ -57,7 +59,7 @@ if(isset($error)) {
 
 /////////////////////////////////////////////
 
-if ( $metric == 'TRUE' ) {
+if ($metric === TRUE) {
   $t = round( (5/9)*($wx->currently->temperature-32) );
 } else {
   $t = round($wx->currently->temperature);
