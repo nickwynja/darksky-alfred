@@ -16,7 +16,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Dark Sky — DEV BUILD</string>
+	<string>Dark Sky</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -27,11 +27,22 @@
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>keyword</key>
-				<string>darkskytest</string>
+				<string>darksky</string>
 				<key>runningsubtext</key>
 				<string>Checking the weather...</string>
 				<key>script</key>
-				<string>php -f darksky.php</string>
+				<string># Look up your location at
+# http://stevemorse.org/jcal/latlon.php
+# Don't use more than 4 decimal points
+
+LAT="40.7214"
+LON="-73.9779"
+
+# Set METRIC to TRUE to return temperature in celcius. Otherwise returns in fahrenheit
+
+METRIC="FALSE";
+
+php -f darksky.php $LAT $LON $METRIC</string>
 				<key>subtext</key>
 				<string>Check the weather right now, the next hour, and the next 24 hours</string>
 				<key>title</key>
@@ -48,7 +59,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>Error checking thanks the @stouty on the Alfred forums.</string>
 	<key>uidata</key>
 	<dict>
 		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
