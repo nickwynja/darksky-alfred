@@ -40,7 +40,7 @@ LON="-73.9779"
 
 # Set METRIC to TRUE to return temperature in celcius. Otherwise returns in fahrenheit
 
-METRIC="FALSE";
+METRIC='FALSE';
 
 php -f darksky.php $LAT $LON $METRIC</string>
 				<key>subtext</key>
