@@ -1,11 +1,23 @@
 <?php
 
-$q = $argv[1];
-$key = $argv[2];
-$lat = $argv[3];
-$log = $argv[4];
-$metric = $argv[5]; 
-$url = "https://api.darkskyapp.com/v1/brief_forecast/{$key}/{$lat},{$log}";
+# This API key is mine but I'll let you use it for now.
+# If this stops working, get your own at
+# https://developer.darkskyapp.com/register
+
+$key = "82666152603d0d3d58296426c96119e5";
+
+# Look up your location at
+# http://stevemorse.org/jcal/latlon.php
+# Don't use more than 4 decimal points
+
+$lat = "40.7214";
+$lon = "-73.9779";
+
+# Set METRIC to true to return temperature in celcius. Otherwise returns in fahrenheit
+
+$metric = "FALSE";
+
+$url = "https://api.darkskyapp.com/v1/brief_forecast/{$key}/{$lat},{$lon}";
 
 function get_data($url) {
   $ch = curl_init();
@@ -21,7 +33,7 @@ $r = get_data($url);
 $wx = json_decode($r);
 $intensity = $wx->currentIntensity;
 
-if ( $metric == 'true' )
+if ( $metric == 'TRUE' )
 {
   $temperature = round( (5/9)*($wx->currentTemp-32) );
   $scale = 'metric';
@@ -47,64 +59,82 @@ switch ($intensity){
 
 $rain = array("intensity" => $how_instense, "until_change" => $wx->minutesUntilChange);
 
-switch ($q) {
-
-  case "now":
-  case "":
-    if ($wx == '') {
-     echo "No response from Dark Sky. Check your Internet connection.";
-    return;
-    }
-    if ($wx->currentSummary == "clear"):
-      if (($scale == 'farenheight' && $temperature >= 32) || ($scale == 'metric' && $temperature >= 0)){
-        echo "It's {$temperature} degrees with no rain. ";
-      } else {
-        echo "It's {$temperature} degrees with no snow. ";      
-      }
-      if ($wx->hourSummary == "clear"):
-        echo "The next hour looks clear.";
-      else: 
-        if (strpos($wx->hourSummary, "min")):
-          echo "The next hour looks like " . str_replace('min', 'minutes', $wx->hourSummary) . ".";
-        else: 
-          echo ucfirst($wx->hourSummary) . " in the next hour.";
-        endif;
-      endif;
-      
-    else:
-      echo "It's {$temperature} degrees and {$wx->currentSummary}. ";
-      if ($rain['until_change'] == 0):
-        echo "It'll be like that for a while.";
-      elseif (strpos($wx->hourSummary, "min")):
-        echo "Expect " . str_replace('min', 'minutes', $wx->hourSummary) . ".";
-      else:
-        echo "In the next hour, expect {$wx->hourSummary}.";
-      endif;
-    endif;
-    break;
-    
-  case "today":
-  case "tomorrow":
-    if ($wx->daySummary == "rain"):
-      echo "Looks like rain in the forecast.";
-    elseif (strpos($wx->daySummary, "tomorrow") || strpos($wx->daySummary, "morning") || strpos($wx->daySummary, "afternoon") || strpos($wx->daySummary, "evening")):
-      if (strpos($wx->daySummary, "chance")):
-        echo "It looks like a {$wx->daySummary}.";
-      else:
-        echo "It looks like {$wx->daySummary}.";
-      endif;
-    break;
-    else:
-      if ($wx->daySummary == "clear"):  
-        echo "It looks {$wx->daySummary} in the next 24 hours.";
-        return;
-      endif;
-      if (strpos($wx->daySummary, "chance")):  
-        echo "It looks like a {$wx->daySummary} in the next 24 hours.";
-      else:
-        echo "It looks like {$wx->daySummary} in the next 24 hours.";
-      endif;
-    endif;
-    break;
+if ($wx == '') {
+ echo "<item uid='error' arg='error' valid='no'>
+        <title>No response from Dark Sky. Check your Internet connection.</title>
+        <subtitle>Oops</subtitle>
+        <icon>icon.png</icon>
+      </item>
+      </items>";
+return;
 }
-?>
+
+if ($wx->currentSummary == "clear") {
+  if (($scale == 'farenheight' && $temperature >= 32) || ($scale == 'metric' && $temperature >= 0)){
+    $precip = 'rain';
+  } else {
+    $precip = 'snow';
+  }
+
+  $now = "It's {$temperature} degrees with no {$precip}.";
+
+  if ($wx->hourSummary == "clear") {
+    $next_hour = "The next hour looks clear.";
+  } else {
+    if (strpos($wx->hourSummary, "min")) {
+      $next_hour = "The next hour looks like " . str_replace('min', 'minutes', $wx->hourSummary) . ".";
+    } else {
+      $next_hour =  ucfirst($wx->hourSummary) . " in the next hour.";
+    }
+  }
+
+} else {
+
+  $now = "It's {$temperature} degrees and {$wx->currentSummary}.";
+
+  if ($rain['until_change'] == 0) {
+    $next_hour = "It'll be like this for a while.";
+  } elseif (strpos($wx->hourSummary, "min")) {
+    $next_hour = "Expect " . str_replace('min', 'minutes', $wx->hourSummary) . ".";
+  } else {
+    $next_hour = "In the next hour, expect {$wx->hourSummary}.";
+  }
+}
+
+if ($wx->daySummary == "rain") {
+  $next_24 = "Looks like rain in the forecast.";
+} elseif (strpos($wx->daySummary, "tomorrow") || strpos($wx->daySummary, "morning") || strpos($wx->daySummary, "afternoon") || strpos($wx->daySummary, "evening")) {
+  if (strpos($wx->daySummary, "chance")) {
+    $next_24 = "Forecasting a {$wx->daySummary}.";
+  } else {
+    $next_24 = "Forecasting {$wx->daySummary}.";
+  }
+  if (strpos($wx->daySummary, "chance")) {
+    $next_24 = "Forecasting a {$wx->daySummary}.";
+  } else {
+    $next_24 = "Forecast is {$wx->daySummary}.";
+  }
+} else {
+  if ($wx->daySummary == "clear") {
+    $next_24 = "Forecast is {$wx->daySummary} in the next 24 hours.";
+  }
+}
+
+echo "<?xml version='1.0'?>
+      <items>
+        <item uid='now' arg='now' valid='no'>
+          <title>{$now}</title>
+          <subtitle>Now</subtitle>
+          <icon>icon.png</icon>
+        </item>
+        <item uid='next-hour' arg='next-hour' valid='no'>
+          <title>{$next_hour}</title>
+          <subtitle>Next Hour</subtitle>
+          <icon>icon.png</icon>
+        </item>
+        <item uid='next-24' arg='next-24' valid='no'>
+          <title>{$next_24}</title>
+          <subtitle>Next 24 Hours</subtitle>
+          <icon>icon.png</icon>
+        </item>
+      </items>";

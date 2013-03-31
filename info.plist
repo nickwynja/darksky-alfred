@@ -2,60 +2,62 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>action</key>
-	<false/>
-	<key>category</key>
-	<string>SCRIPTS</string>
-	<key>command</key>
-	<string># This API key is mine but I'll let you use it for now.
-# If this stops working, get your own at
-# https://developer.darkskyapp.com/register
-
-KEY="82666152603d0d3d58296426c96119e5"
-
-# Look up your location at
-# http://stevemorse.org/jcal/latlon.php
-# Don't use more than 4 decimal points
-
-LAT="40.7214"
-LON="-73.9779"
-
-# Set METRIC to true to return temperature in celcius. Otherwise returns in fahrenheit
-
-METRIC="false"
-
-php -f darksky.php -- "{query}" $KEY $LAT $LON $METRIC</string>
+	<key>bundleid</key>
+	<string>com.nickwynja.darksky</string>
+	<key>connections</key>
+	<dict>
+		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
+		<array/>
+	</dict>
+	<key>createdby</key>
+	<string>Nick Wynja</string>
+	<key>description</key>
+	<string>Check the weather using the Dark Sky API</string>
 	<key>disabled</key>
 	<false/>
-	<key>escapedollar</key>
-	<true/>
-	<key>escapequery</key>
-	<true/>
-	<key>escapequerybackquotes</key>
-	<true/>
-	<key>escapequerybrackets</key>
-	<true/>
-	<key>escapequeryquotes</key>
-	<true/>
-	<key>escapequerysemicolons</key>
-	<true/>
-	<key>growloutput</key>
-	<true/>
-	<key>growloutputsticky</key>
-	<false/>
-	<key>keyword</key>
-	<string>darksky</string>
-	<key>logging</key>
-	<false/>
-	<key>multifileargs</key>
-	<false/>
-	<key>parameter</key>
-	<integer>2</integer>
-	<key>silent</key>
-	<true/>
-	<key>subtitle</key>
-	<string>Check weather for "now" and the next 24 hours with "today" or "tomorrow".</string>
-	<key>title</key>
-	<string>Dark Sky</string>
+	<key>name</key>
+	<string>Dark Sky — DEV BUILD</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>darkskytest</string>
+				<key>runningsubtext</key>
+				<string>Checking the weather...</string>
+				<key>script</key>
+				<string>php -f darksky.php</string>
+				<key>subtext</key>
+				<string>Check the weather right now, the next hour, and the next 24 hours</string>
+				<key>title</key>
+				<string>Dark Sky</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>296C4E72-2072-4699-B7ED-717506769A75</string>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>nickwynja.com/projects</string>
 </dict>
 </plist>
