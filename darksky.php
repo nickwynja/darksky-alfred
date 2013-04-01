@@ -67,11 +67,11 @@ if ($metric === TRUE) {
 
 $now = "It's {$t} degrees and " . strtolower($wx->currently->summary).'.';
 
-if ($wx->minutely->summary == '') {
+if (empty($wx->minutely->summary)) {
   $wx->minutely->summary =  $wx->hourly->data[0]->summary;
 }
 
-if ($wx->hourly->summary == '') {
+if (empty($wx->hourly->summary)) {
   $wx->hourly->summary =  $wx->daily->data[0]->summary;
 }
 
