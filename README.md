@@ -8,4 +8,4 @@ To configure the extension, you must [register for an API key](https://developer
 
 ## Install ##
 
-Download the workflow and double-click to open in Alfred 2.
+Download the master and unzip to make your own changes. Or change the extension to '.alfredworkflow' and double-click to open in Alfred 2. The workflow can also be [downloaded from my site](http://cl.ly/3P0M1z1s1a0Z).
