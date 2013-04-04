@@ -17,8 +17,7 @@ function get_data($url) {
 $key = $w->get( 'api.key', 'settings.plist' );
 $theme = $w->get('theme', 'settings.plist');
 $unit_code = $w->get( 'units', 'settings.plist' );
-$l->latitude = $w->get('latitude', 'settings.plist');
-$l->longitude = $w->get('longitude', 'settings.plist');
+$location = $w->get('location', 'settings.plist');
 
 // Check api key, die if malformed or missing
 if (preg_match('/[0-9a-f]{32}/',$key) != 1) {
@@ -31,11 +30,15 @@ if (preg_match('/[0-9a-f]{32}/',$key) != 1) {
 // Set path to theme icons
 $icon_path = 'icons/'.$theme.'/';
 
-if (!$l->latitude || !$l->longitude) {
+if (!$location) {
 	// Get location data from IP address
 	$ip = get_data('http://ipecho.net/plain');
 	$r  = get_data('http://freegeoip.net/json/'.$ip);
 	$l = json_decode($r);
+} else {
+    $loc = explode(',', $location, 2);
+    $l->latitude = $loc[0];
+    $l->longitude = $loc[1];
 }
 
 // Die if unable to determine location

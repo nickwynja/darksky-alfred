@@ -119,39 +119,35 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
 				<key>escaping</key>
 				<integer>63</integer>
+				<key>keyword</key>
+				<string>w u</string>
 				<key>script</key>
 				<string>require_once('workflows.php');
 $w = new Workflows();
 
-if (preg_match('|^https?://|', '{query}')) {
-	$status = "Opened web site in browser.";
-	exec('open {query}');
-} else {
-    if ('{query}' == 'clear') {
-		$w-&gt;set( 'latitude', '', 'settings.plist' );
-		$w-&gt;set( 'longitude', '', 'settings.plist' );
-		$status = "Location cleared.";
-    } else if (preg_match('/(-?\d+\.\d+)[\s,](-?\d+\.\d+)/', '{query}', $loc)) {
-		$loc[1] = round($loc[1], 4);
-		$loc[2] = round($loc[2], 4);
-		$w-&gt;set( 'latitude', $loc[1], 'settings.plist' );
-		$w-&gt;set( 'longitude', $loc[2], 'settings.plist' );
-		$status = "Location set to $loc[1],$loc[2].";
-	} else {
-		$status = "Latitude and longitude don't look right. Double-check and try again. {query}";
-	}
-}
+$w-&gt;result('default', 'default', 'Location Based', 'Default units from Forecast.io based on your location.', 'icon.png', 'yes');
+$w-&gt;result('us', 'us', 'US Units', 'Always use imperial units.', 'icon.png', 'yes');
+$w-&gt;result('si', 'si', 'Metric Units', 'Always use metric units.', 'icon.png', 'yes');
+$w-&gt;result('uk', 'uk', 'UK Units', 'Use metric units except for wind speed.', 'icon.png', 'yes');
 
-echo $status;</string>
+echo $w-&gt;toxml();</string>
+				<key>subtext</key>
+				<string>Set units for Forecast results.</string>
+				<key>title</key>
+				<string>Forecast.io Units</string>
 				<key>type</key>
 				<integer>1</integer>
+				<key>withspace</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>D8157589-0F28-48FF-BC3A-35692E638EAE</string>
+			<string>3F2D91F3-EBA8-4A2F-999B-6E0BACB29ED1</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -203,29 +199,6 @@ echo $w-&gt;toxml();</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<false/>
-				<key>output</key>
-				<integer>0</integer>
-				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Forecast.io</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argumenttype</key>
 				<integer>1</integer>
 				<key>escaping</key>
@@ -253,6 +226,29 @@ echo $w-&gt;toxml();</string>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>CDD82361-0870-4F81-89C1-BCFC0380CF87</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Forecast.io</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -372,6 +368,40 @@ echo $w-&gt;toxml();</string>
 				<string>require_once('workflows.php');
 $w = new Workflows();
 
+if (preg_match('|^https?://|', '{query}')) {
+	$status = "Opened web site in browser.";
+	exec('open {query}');
+} else {
+    if ('{query}' == 'clear') {
+		$w-&gt;set( 'location', '', 'settings.plist' );
+		$status = "Location cleared.";
+    } else if (preg_match('/(-?\d+\.\d+)[\s,](-?\d+\.\d+)/', '{query}', $loc)) {
+		$location = round($loc[1], 4) . ',' . round($loc[2], 4);
+		$w-&gt;set( 'location', $location, 'settings.plist' );
+		$status = "Location set to $location.";
+	} else {
+		$status = "Latitude and longitude don't look right. Double-check and try again. {query}";
+	}
+}
+
+echo $status;</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>D8157589-0F28-48FF-BC3A-35692E638EAE</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+
 $w-&gt;set( 'units', '{query}', 'settings.plist' );
 $status = "Weather units set to {query}.";
 
@@ -384,39 +414,6 @@ echo $status;
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>A2AF6EEE-551C-4552-AA61-23B995261D42</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
-				<key>escaping</key>
-				<integer>63</integer>
-				<key>keyword</key>
-				<string>w u</string>
-				<key>script</key>
-				<string>require_once('workflows.php');
-$w = new Workflows();
-
-$w-&gt;result('default', 'default', 'Location Based', 'Default units from Forecast.io based on your location.', 'icon.png', 'yes');
-$w-&gt;result('us', 'us', 'US Units', 'Always use imperial units.', 'icon.png', 'yes');
-$w-&gt;result('si', 'si', 'Metric Units', 'Always use metric units.', 'icon.png', 'yes');
-$w-&gt;result('uk', 'uk', 'UK Units', 'Use metric units except for wind speed.', 'icon.png', 'yes');
-
-echo $w-&gt;toxml();</string>
-				<key>subtext</key>
-				<string>Set units for Forecast results.</string>
-				<key>title</key>
-				<string>Forecast.io Units</string>
-				<key>type</key>
-				<integer>1</integer>
-				<key>withspace</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>3F2D91F3-EBA8-4A2F-999B-6E0BACB29ED1</string>
 		</dict>
 	</array>
 	<key>readme</key>
