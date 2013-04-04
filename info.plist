@@ -3,20 +3,117 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.nickwynja.darksky</string>
+	<string>com.conigs.forecastio</string>
 	<key>connections</key>
 	<dict>
+		<key>08946CC7-35C3-4140-83A4-1197E1C59857</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A84F2DC4-FBBE-4BDF-B239-26DF0C04388C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
-		<array/>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>9CB89653-E465-47FF-9885-3AACEA50A175</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>3F2D91F3-EBA8-4A2F-999B-6E0BACB29ED1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A2AF6EEE-551C-4552-AA61-23B995261D42</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>9AE4B4E2-27D2-455B-86CC-646B5C900562</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B0114988-BB94-4313-82A6-28B98F809B39</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A2AF6EEE-551C-4552-AA61-23B995261D42</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A84F2DC4-FBBE-4BDF-B239-26DF0C04388C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>B0114988-BB94-4313-82A6-28B98F809B39</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>CDD82361-0870-4F81-89C1-BCFC0380CF87</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>D8157589-0F28-48FF-BC3A-35692E638EAE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>D8157589-0F28-48FF-BC3A-35692E638EAE</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
-	<string>Nick Wynja</string>
+	<string>Paul Conigliaro</string>
 	<key>description</key>
-	<string>Check the weather using the Dark Sky API</string>
+	<string>Check the weather using the Forecast.io API</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Dark Sky</string>
+	<string>Forecast.io</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -27,26 +124,168 @@
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>keyword</key>
-				<string>darksky</string>
-				<key>runningsubtext</key>
-				<string>Checking the weather...</string>
+				<string>w u</string>
 				<key>script</key>
-				<string># Look up your location at
-# http://stevemorse.org/jcal/latlon.php
-# Don't use more than 4 decimal points
+				<string>require_once('workflows.php');
+$w = new Workflows();
 
-LAT="40.7214"
-LON="-73.9779"
+$w-&gt;result('default', 'default', 'Location Based', 'Default units from Forecast.io based on your location.', 'icon.png', 'yes');
+$w-&gt;result('us', 'us', 'US Units', 'Always use imperial units.', 'icon.png', 'yes');
+$w-&gt;result('si', 'si', 'Metric Units', 'Always use metric units.', 'icon.png', 'yes');
+$w-&gt;result('uk', 'uk', 'UK Units', 'Use metric units except for wind speed.', 'icon.png', 'yes');
 
-# Set METRIC to TRUE to return temperature in celcius. Otherwise returns in fahrenheit
-
-METRIC='FALSE';
-
-php -f darksky.php $LAT $LON $METRIC</string>
+echo $w-&gt;toxml();</string>
 				<key>subtext</key>
-				<string>Check the weather right now, the next hour, and the next 24 hours</string>
+				<string>Set units for Forecast results.</string>
 				<key>title</key>
-				<string>Dark Sky</string>
+				<string>Forecast.io Units</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>3F2D91F3-EBA8-4A2F-999B-6E0BACB29ED1</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>9CB89653-E465-47FF-9885-3AACEA50A175</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>w k</string>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+
+$w-&gt;result('set', '{query}', 'Set API Key', 'Paste your API key from Forecast.io. (Enter \'clear\' to clear API key.)', 'icon.png', 'yes');
+$w-&gt;result('register', 'https://developer.forecast.io/register', 'Register for API Key', 'Register to get your API key. It\'s free!', 'icon.png', 'yes');
+$w-&gt;result('login', 'https://developer.forecast.io/log_in', 'Log in for API Key', 'Already registered? Log in to get your API key.', 'icon.png', 'yes');
+
+echo $w-&gt;toxml();</string>
+				<key>subtext</key>
+				<string>Set your Forecast.io API key for the workflow to work.</string>
+				<key>title</key>
+				<string>Forecast.io API Key</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>08946CC7-35C3-4140-83A4-1197E1C59857</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>w l</string>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+
+$w-&gt;result('set', '{query}', 'Set Forecast location', 'Paste your latitude and longitude (Enter \'clear\' to determine location automatically.)', 'icon.png', 'yes');
+$w-&gt;result('find', 'http://stevemorse.org/jcal/latlon.php', 'Find a location', 'Get latitude and longitude for an addresss.', 'icon.png', 'yes');
+
+echo $w-&gt;toxml();</string>
+				<key>subtext</key>
+				<string>Set location for Forecast results.</string>
+				<key>title</key>
+				<string>Forecast.io Location</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>CDD82361-0870-4F81-89C1-BCFC0380CF87</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Forecast.io</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>83F7F452-182C-448D-9B5B-1B154CDE0222</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+$w-&gt;set( 'theme', '{query}', 'settings.plist' );
+
+echo "Theme set to {query}.";</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>B0114988-BB94-4313-82A6-28B98F809B39</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>weather</string>
+				<key>runningsubtext</key>
+				<string>Checking the weather based on your location...</string>
+				<key>script</key>
+				<string>php -f forecast.php</string>
+				<key>subtext</key>
+				<string>Check the weather now, and in the near future.</string>
+				<key>title</key>
+				<string>Forecast.io</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -57,18 +296,194 @@ php -f darksky.php $LAT $LON $METRIC</string>
 			<key>uid</key>
 			<string>296C4E72-2072-4699-B7ED-717506769A75</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+
+if ('{query}' == 'https://developer.forecast.io/log_in' || '{query}' == 'https://developer.forecast.io/register') {
+	$status = "Opening Forecast for Developers in browser.";
+	exec('open {query}');
+} else {
+	if(preg_match('/[0-9a-f]{32}/','{query}') === 1) {
+		$w-&gt;set( 'api.key', '{query}', 'settings.plist' );
+		$status = "API key set to {query}.";
+	} else if ('{query}' == 'clear') {
+		$w-&gt;set( 'api.key', '', 'settings.plist' );
+		$status = "API key cleared.";
+	} else {
+		$status = "API key doesn't look right. Double-check and try again.{query}";
+	}
+}
+
+echo $status;
+</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>A84F2DC4-FBBE-4BDF-B239-26DF0C04388C</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>w t</string>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+$w-&gt;result('light','light','Light Icons','Best for darker Alfred themes.','icons/light/cloudy.png','yes');
+$w-&gt;result('dark','dark','Dark Icons','Best for lighter Alfred themes.','icons/dark/cloudy.png','yes');
+echo $w-&gt;toxml();</string>
+				<key>subtext</key>
+				<string>Choose from dark or light.</string>
+				<key>title</key>
+				<string>Choose weather theme.</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9AE4B4E2-27D2-455B-86CC-646B5C900562</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+
+if (preg_match('|^https?://|', '{query}')) {
+	$status = "Opened web site in browser.";
+	exec('open {query}');
+} else {
+    if ('{query}' == 'clear') {
+		$w-&gt;set( 'location', '', 'settings.plist' );
+		$status = "Location cleared.";
+    } else if (preg_match('/(-?\d+\.\d+)[\s,](-?\d+\.\d+)/', '{query}', $loc)) {
+		$location = round($loc[1], 4) . ',' . round($loc[2], 4);
+		$w-&gt;set( 'location', $location, 'settings.plist' );
+		$status = "Location set to $location.";
+	} else {
+		$status = "Latitude and longitude don't look right. Double-check and try again. {query}";
+	}
+}
+
+echo $status;</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>D8157589-0F28-48FF-BC3A-35692E638EAE</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>require_once('workflows.php');
+$w = new Workflows();
+
+$w-&gt;set( 'units', '{query}', 'settings.plist' );
+$status = "Weather units set to {query}.";
+
+echo $status;
+</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>A2AF6EEE-551C-4552-AA61-23B995261D42</string>
+		</dict>
 	</array>
 	<key>readme</key>
-	<string>Error checking thanks the @stouty on the Alfred forums.</string>
+	<string>Original Alfred extension by Nick Wynja
+http://hackmake.org/2012/11/dark-sky-alfred-extension
+
+Icon set: Climacons by Adam Whitcroft
+http://adamwhitcroft.com/climacons/
+
+Weather Data from Forecast.io/Dark Sky
+http://forecast.io</string>
 	<key>uidata</key>
 	<dict>
+		<key>08946CC7-35C3-4140-83A4-1197E1C59857</key>
+		<dict>
+			<key>ypos</key>
+			<real>260</real>
+		</dict>
 		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
 		<dict>
 			<key>ypos</key>
-			<real>10</real>
+			<real>40</real>
+		</dict>
+		<key>3F2D91F3-EBA8-4A2F-999B-6E0BACB29ED1</key>
+		<dict>
+			<key>ypos</key>
+			<real>370</real>
+		</dict>
+		<key>83F7F452-182C-448D-9B5B-1B154CDE0222</key>
+		<dict>
+			<key>ypos</key>
+			<real>200</real>
+		</dict>
+		<key>9AE4B4E2-27D2-455B-86CC-646B5C900562</key>
+		<dict>
+			<key>ypos</key>
+			<real>150</real>
+		</dict>
+		<key>9CB89653-E465-47FF-9885-3AACEA50A175</key>
+		<dict>
+			<key>ypos</key>
+			<real>40</real>
+		</dict>
+		<key>A2AF6EEE-551C-4552-AA61-23B995261D42</key>
+		<dict>
+			<key>ypos</key>
+			<real>370</real>
+		</dict>
+		<key>A84F2DC4-FBBE-4BDF-B239-26DF0C04388C</key>
+		<dict>
+			<key>ypos</key>
+			<real>260</real>
+		</dict>
+		<key>B0114988-BB94-4313-82A6-28B98F809B39</key>
+		<dict>
+			<key>ypos</key>
+			<real>150</real>
+		</dict>
+		<key>CDD82361-0870-4F81-89C1-BCFC0380CF87</key>
+		<dict>
+			<key>ypos</key>
+			<real>490</real>
+		</dict>
+		<key>D8157589-0F28-48FF-BC3A-35692E638EAE</key>
+		<dict>
+			<key>ypos</key>
+			<real>490</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string>nickwynja.com/projects</string>
+	<string>conigs.com</string>
 </dict>
 </plist>

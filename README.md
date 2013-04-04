@@ -1,11 +1,15 @@
 ## About ##
 
-This extension checks the [Dark Sky](http://darkskyapp.com/) [API](https://developer.darkskyapp.com/) for the weather with the command `now`, providing you with the current temperature, conditions, and what to expect for the next hour. Using the command `today` or `tomorrow` will give you the outlook for the next 24 hours.
+This extension checks the [Forecast](http://forecast.io/) [API](https://developer.forecast.io/) for the weather. It will show the conditions right now, along with the brief summary for the next hour and near future. Other lines show weather for today, tomorrow, and the next few days. The workflow will try to show relevant information depending on time-of-day.
 
 ## Configure ##
 
-To configure the extension for your area, [look up the coordinates](http://stevemorse.org/jcal/latlon.php) for your address and enter them as `LAT` and `LON` in the extension settings. Alfred displays the weather using Notification Center. If out of the box, it’s not showing you anything when you submit the command, check that your Alfred settings have Extension Output selected.
+To configure the extension, you must [register for an API key](https://developer.forecast.io/register). This is linked from within the workflow. A link to log in to Forecast for Developers is also included. Once you have an API key, it can be pasted into the workflow by entering 'w k ' and then your API key. You can also clear your key by entering 'w k clear'. The workflow will verify the API key.
+
+Themes can also be set using 'w u'. At the time, only light and dark themes are included.
+
+Units can now be explicitly set as a preference instead of just location based. You can choose default (based on location), US units, metric units, or UK units by using 'w u'.
 
 ## Install ##
 
-Download or clone the directory and place it in `~/Library/Application Support/Alfred/extensions/scripts/` or [download the extension package](https://github.com/downloads/nickwynja/darksky-alfred/Dark%20Sky.alfredextension) and double click to install.
+Download the master and unzip to make your own changes. Or change the extension to '.alfredworkflow' and double-click to open in Alfred 2. The workflow can also be [downloaded from my site](http://cl.ly/3P0M1z1s1a0Z).
