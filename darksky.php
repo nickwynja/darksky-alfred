@@ -15,6 +15,30 @@ function get_data($url) {
 
 $key = $w->get( 'api.key', 'settings.plist' );
 
+// Check for updates once a day
+
+$now = time();
+$time_checked_for_updates = (int) $w->get( 'update_check_time', 'settings.plist' );
+$since_checked = $now - $time_checked_for_updates;
+
+if ($since_checked > 86400) /* One Day */ {
+  $w->set( 'update_check_time', $now, 'settings.plist' );
+
+  $r = get_data('http://localhost/version.json');
+  $v = json_decode($r);
+
+  $current_version = (int) $w->get( 'version.number', 'settings.plist' );
+  $update_ignore_date = (int) $w->get( 'update_ignore_date', 'settings.plist' );
+  $since_update = $now - $update_ignore_date;
+
+  if (($v->updated_version > $current_version) && ($since_update > 259200)) /* Three Days */ {
+    $w->result( 'download', $v->download_url, "Version {$v->updated_version} of Dark Sky is available. Update now?", "This will take you to the download page.", 'icon.png');
+    $w->result( 'dont-update', 'dont-update', "No thanks. Tell me what the weather's like...", "Check the forcast and ignore updates for a few days.", 'icon.png');
+    echo $w->toxml();
+    die;
+  }
+}
+
 // Get location data from IP address
 
 $ip = get_data('http://ipecho.net/plain');
@@ -79,8 +103,8 @@ if (strpos($wx->minutely->summary, "min.")){
  $wx->minutely->summary = str_replace('min.', 'minutes', $wx->minutely->summary);
 }
 
-$w->result( '0', 'now', $now, 'Now', 'icon.png', 'no');
-$w->result( '1', 'next-hour', $wx->minutely->summary, 'Next Hour', 'icon.png','no');
-$w->result( '2', 'next-24', $wx->hourly->summary, 'Next 24 Hours', 'icon.png','no');
+$w->result( '1', 'now', $now, 'Now', 'icon.png', 'no');
+$w->result( '2', 'next-hour', $wx->minutely->summary, 'Next Hour', 'icon.png','no');
+$w->result( '3', 'next-24', $wx->hourly->summary, 'Next 24 Hours', 'icon.png','no');
 
 echo $w->toxml();

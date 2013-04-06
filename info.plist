@@ -7,6 +7,17 @@
 	<key>connections</key>
 	<dict>
 		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>D8A40421-6844-4411-9750-0362A5A6E4F2</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>D8A40421-6844-4411-9750-0362A5A6E4F2</key>
 		<array/>
 	</dict>
 	<key>createdby</key>
@@ -31,13 +42,30 @@
 				<key>runningsubtext</key>
 				<string>Checking the weather based on your location...</string>
 				<key>script</key>
-				<string>php -f darksky.php</string>
+				<string>//////LOCATION OVER-RIDE ////////////
+
+$location = array(
+	"latitude" =&gt; "",
+	"longitude" =&gt; "",
+	"units" =&gt; ""
+);
+
+////////////////////////////////////
+
+require_once('workflows.php');
+$w = new Workflows();
+
+$w-&gt;set( 'location.latitude', $location['latitude'], 'settings.plist' );
+$w-&gt;set( 'location.longitude', $location['longitude'], 'settings.plist' );
+$w-&gt;set( 'location.units', $location['units'], 'settings.plist' );
+
+echo shell_exec('php -f darksky.php');</string>
 				<key>subtext</key>
 				<string>Check the weather right now, the next hour, and the next 24 hours</string>
 				<key>title</key>
 				<string>Dark Sky</string>
 				<key>type</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -46,12 +74,45 @@
 			<key>uid</key>
 			<string>296C4E72-2072-4699-B7ED-717506769A75</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>// Ignore updates for three days or take you to the update page
+
+
+require_once('workflows.php');
+$w = new Workflows();
+$q = "{query}";
+$now = time();
+
+if ($q == 'dont-update') {
+  $w-&gt;set( 'update_ignore_date', $now , 'settings.plist' );
+  shell_exec(`osascript -e 'tell application "Alfred 2" to search "darksky"'`);
+} else {
+  shell_exec("open {$q}");
+}</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>D8A40421-6844-4411-9750-0362A5A6E4F2</string>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>Error checking thanks the @stouty on the Alfred forums.</string>
 	<key>uidata</key>
 	<dict>
 		<key>296C4E72-2072-4699-B7ED-717506769A75</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>D8A40421-6844-4411-9750-0362A5A6E4F2</key>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
