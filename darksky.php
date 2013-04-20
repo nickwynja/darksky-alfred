@@ -1,6 +1,11 @@
 <?php
+
 require_once('workflows.php');
 $w = new Workflows();
+$current_version = '2.0';
+$latitude = isset($argv[1]) ? $argv[1] : '' ; // Index 0 is 'darksky.php'
+$longitude = isset($argv[2]) ? $argv[2] : '';
+$user_unit = isset($argv[3]) ? $argv[3] : '' ;
 
 function get_data($url) {
   $ch = curl_init();
@@ -13,51 +18,74 @@ function get_data($url) {
   return $data;
 }
 
-$key = $w->get( 'api.key', 'settings.plist' );
+// Initialize Settings
 
-// Check for updates once a day
+$s = 'settings.plist';
+$key = $w->get( 'api_key', $s );
 
-$now = time();
-$time_checked_for_updates = (int) $w->get( 'update_check_time', 'settings.plist' );
-$since_checked = $now - $time_checked_for_updates;
+if (!$w->get( 'check_for_updates', $s )) {
+  $w->set( 'check_for_updates', 'TRUE' , $s);
+}
 
-if ($since_checked > 86400) /* One Day */ {
-  $w->set( 'update_check_time', $now, 'settings.plist' );
+if (!$w->get( 'update_ignore_date', $s )) {
+  $w->set( 'update_ignore_date', time() , $s);
+}
 
-  $r = get_data('http://localhost/version.json');
+// Check for updates. Initially had coded for checking once a day but Alfred initiated duplicate calls which was screwing up the timing. This check isn't expensive so I'll just do it every time.
+
+if (($w->get( 'check_for_updates', $s ) == 'TRUE')) {
+  $now = time();
+  $r = get_data('https://raw.github.com/nickwynja/darksky-alfred/master/version.json');
   $v = json_decode($r);
 
-  $current_version = (int) $w->get( 'version.number', 'settings.plist' );
-  $update_ignore_date = (int) $w->get( 'update_ignore_date', 'settings.plist' );
-  $since_update = $now - $update_ignore_date;
+  $update_version = (float) $v->updated_version;
+  $update_ignore_date = (int) $w->get( 'update_ignore_date', $s );
+  $since_update_ignored = $now - $update_ignore_date;
 
-  if (($v->updated_version > $current_version) && ($since_update > 259200)) /* Three Days */ {
+  if (($update_version > $current_version) && ($since_update_ignored > 259200)) {
     $w->result( 'download', $v->download_url, "Version {$v->updated_version} of Dark Sky is available. Update now?", "This will take you to the download page.", 'icon.png');
     $w->result( 'dont-update', 'dont-update', "No thanks. Tell me what the weather's like...", "Check the forcast and ignore updates for a few days.", 'icon.png');
+    $w->result( 'never-update', 'never-update', "Don't ever check for updates.", "Just show me the forecast.", 'icon.png');
     echo $w->toxml();
     die;
   }
 }
 
-// Get location data from IP address
+// Check for user set variables
 
-$ip = get_data('http://ipecho.net/plain');
-$r  = get_data('http://freegeoip.net/json/'.$ip);
-$l = json_decode($r);
+if (($latitude !== 'FALSE' ) && ($longitude !== 'FALSE')) {
 
-if (!is_object($l)) {
-  $w->result( 'error', 'error', 'There was an error checking your weather.', 'Unable to determine location', 'icon.png', 'no');
-  echo $w->toxml();
-  die ($error . print_r($l, 1));
+  $l->latitude = $latitude;
+  $l->longitude = $longitude;
+
+} else {
+
+  // Get location data from IP address
+
+  $ip = get_data('http://ipecho.net/plain');
+  $r  = get_data('http://freegeoip.net/json/'.$ip);
+  $l = json_decode($r);
+
+  if (!is_object($l)) {
+    $w->result( 'error', 'error', 'There was an error checking your weather.', 'Unable to determine location', 'icon.png', 'no');
+    echo $w->toxml();
+    die ($error . print_r($l, 1));
+  }
 }
 
-// Set to metric if outside of US
+if (!empty($user_unit)) {
 
-$metric = $l->country_code == 'US' ? FALSE : TRUE;
+$unit = $user_unit;
+
+} else {
+
+$unit = 'auto';
+
+}
 
 // Call API URL
 
-$url = "https://api.forecast.io/forecast/{$key}/{$l->latitude},{$l->longitude}";
+$url = "https://api.forecast.io/forecast/{$key}/{$l->latitude},{$l->longitude}?units={$unit}";
 $r = get_data($url);
 $wx = json_decode($r);
 
@@ -83,11 +111,7 @@ if(isset($error)) {
 
 /////////////////////////////////////////////
 
-if ($metric === TRUE) {
-  $t = round( (5/9)*($wx->currently->temperature-32) );
-} else {
-  $t = round($wx->currently->temperature);
-}
+$t = round($wx->currently->temperature);
 
 $now = "It's {$t} degrees and " . strtolower($wx->currently->summary).'.';
 

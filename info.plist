@@ -42,30 +42,25 @@
 				<key>runningsubtext</key>
 				<string>Checking the weather based on your location...</string>
 				<key>script</key>
-				<string>//////LOCATION OVER-RIDE ////////////
+				<string># Dark Sky location lookup is automatic based on IP Location
+# To over-ride, use $SET_LAT and $SET_LON with your latitude and longitude
+# Find your LAT/LON at http://www.stevemorse.org/jcal/latlon.php
+# Set like SET_LAT='40.7214' / SET_LON='-73.9779'
+# To not over-ride automatic location, set to FALSE
+# Unit options: 'us', 'si', 'ca', 'uk', 'auto'
+# See https://developer.forecast.io/docs/v2 for more info
 
-$location = array(
-	"latitude" =&gt; "",
-	"longitude" =&gt; "",
-	"units" =&gt; ""
-);
+SET_LAT=FALSE
+SET_LON=FALSE
+SET_UNIT='auto'
 
-////////////////////////////////////
-
-require_once('workflows.php');
-$w = new Workflows();
-
-$w-&gt;set( 'location.latitude', $location['latitude'], 'settings.plist' );
-$w-&gt;set( 'location.longitude', $location['longitude'], 'settings.plist' );
-$w-&gt;set( 'location.units', $location['units'], 'settings.plist' );
-
-echo shell_exec('php -f darksky.php');</string>
+php -f darksky.php $SET_LAT $SET_LON $SET_UNIT</string>
 				<key>subtext</key>
 				<string>Check the weather right now, the next hour, and the next 24 hours</string>
 				<key>title</key>
 				<string>Dark Sky</string>
 				<key>type</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -82,7 +77,6 @@ echo shell_exec('php -f darksky.php');</string>
 				<key>script</key>
 				<string>// Ignore updates for three days or take you to the update page
 
-
 require_once('workflows.php');
 $w = new Workflows();
 $q = "{query}";
@@ -90,6 +84,9 @@ $now = time();
 
 if ($q == 'dont-update') {
   $w-&gt;set( 'update_ignore_date', $now , 'settings.plist' );
+  shell_exec(`osascript -e 'tell application "Alfred 2" to search "darksky"'`);
+} elseif ($q == 'never-update') {
+  $w-&gt;set( 'check_for_updates', "FALSE" , 'settings.plist' );
   shell_exec(`osascript -e 'tell application "Alfred 2" to search "darksky"'`);
 } else {
   shell_exec("open {$q}");
