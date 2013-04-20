@@ -1,11 +1,11 @@
 ## About ##
 
-This extension checks the [Dark Sky](http://darkskyapp.com/) [API](https://developer.darkskyapp.com/) for the weather with the command `now`, providing you with the current temperature, conditions, and what to expect for the next hour. Using the command `today` or `tomorrow` will give you the outlook for the next 24 hours.
+This extension checks the [Forecast.io](http://forecast.io/) [API](https://developer.forecast.io/) for the weather at your current location (using your IP address) providing you with the current temperature, conditions, and what to expect for the next hour and the next 24 hours.
 
 ## Configure ##
 
-To configure the extension for your area, [look up the coordinates](http://stevemorse.org/jcal/latlon.php) for your address and enter them as `LAT` and `LON` in the extension settings. Alfred displays the weather using Notification Center. If out of the box, it’s not showing you anything when you submit the command, check that your Alfred settings have Extension Output selected.
+No configuration is needed since the extension automatically looks up the weather based on your current location using your IP address. To over-ride automatic location lookup, [look up the coordinates](http://stevemorse.org/jcal/latlon.php) for your address and enter them as `SET_LAT` and `SET_LON` in the workflow settings.
 
 ## Install ##
 
-Download or clone the directory and place it in `~/Library/Application Support/Alfred/extensions/scripts/` or [download the extension package](https://github.com/downloads/nickwynja/darksky-alfred/Dark%20Sky.alfredextension) and double click to install.
+Download or clone the directory and place it in `~/Library/Application Support/Alfred 2/Alfred.alfredpreferences/workflows` or [download the worfklow package](http://cl.ly/3l213I273h0r) and double click to install.
